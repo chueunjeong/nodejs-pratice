@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("./head.ejs") %>
+    </head>
+
+    <body>
+        <%- include("./nav.ejs") %>
+
+        <div class="container">
+            <div class="form-group">
+                <label for="inputId">번호</label>
+                <input type="text" class="form-control" id="inputId" disabled value="<%=post.post_id %>">
+            </div>
+            <div class="form-group">
+                <label for="inputUser">작성자</label>
+                <input type="text" class="form-control" id="inputUser" disabled value="<%=post.email %>">
+            </div>
+            <div class="form-group">
+                <label for="inputTitle">제목</label>
+                <input type="text" class="form-control" id="inputTitle" disabled value="<%=post.title %>">
+            </div>
+            <div class="form-group">
+                <label for="inputContents">내용</label>
+                <textarea class="form-control" id="inputContents" disabled rows="10"><%=post.contents %></textarea>
+            </div>
+            <!-- Comments -->
+					<div class="form-group"">
+						<h2>답변</h2>
+						<div>
+							<!-- Single Comments -->
+							<div >
+                                <div >
+                                    <!--댓글작성-->
+									<form method="post" action="/post/comment/<%=post.post_id%>" >  
+										<div class="form-group">                                            
+                                            <textarea name="comments1" class="form-control" id="inputContents" rows="10"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn-outline-success">등록</button>
+                                    </form>
+                                    <br />
+                                    <!--댓글 작성 끝-->
+								<div >
+                                   <!--댓글 목록--> 
+                                   <div style="border: 1px solid black;">
+                                    <h2>댓글 수 $$$$</h2>
+                                    <% comments.forEach(function(comment,index){ %>
+                                        <div>COMMENT<%=index+1 %></div>
+                                            <div>댓글 내용:<%=comment.contents %></div> 
+                                            <div>작성시간:<%=comment.creation_date %></div>
+                                            <div><i class="far fa-thumbs-up"></i>좋아요 수:<%=comment.good %> </div>
+                                            
+                                            <hr />                                            
+                                    <% }) %>
+                                </div>
+                                    <!--댓글 목록 끝-->
+                                    <!--댓글 수정-->
+                                    <form method="post" action="<%=action %>">
+                                        <div class="container">
+                                            
+                                            <div class="form-group">
+                                                <label for="inputContents">-->수정 내용</label>
+                                                <textarea name="comment_contents" class="form-control" id="inputContents" rows="10"><%=comment.contents %></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">댓글 수정</button>
+                                        </div>
+                                    </form>
+
+
+								
+									
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+		<!--/ End Comments -->
+            <% if(post.email == user.email) { %>
+                <button type="button" class="btn btn-info" onclick="location.href='/post/edit/<%=post.post_id %>'">수정</button>
+                <button type="button" class="btn btn-danger" onclick="location.href='/post/delete/<%=post.post_id %>'">삭제</button>
+            <% } %>
+            <button type="button" class="btn btn-warning" onclick="location.href='/posts/'">목록으로</button>
+            <a href="/post/likes/<%=post.post_id %>"><i class="fas fa-heartbeat"></i></a>
+                    </div>
+
+
+        
+    </body>
+</html>
